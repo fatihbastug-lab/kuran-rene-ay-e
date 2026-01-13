@@ -3,160 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Diyanet Elif-Ba 2024 Dijital Akademi</title>
+    <title>Diyanet Elif-Ba 2024 Akademisi</title>
     <style>
-        :root { --p: #ff6baf; --y: #ffd600; --b: #f0faff; --g: #4caf50; --purp: #9c27b0; }
-        body { margin: 0; background: var(--b); font-family: 'Segoe UI', Tahoma, sans-serif; display: flex; justify-content: center; }
-        .app { width: 100%; max-width: 800px; background: white; min-height: 100vh; display: flex; flex-direction: column; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        :root { --p: #e91e63; --y: #ffc107; --b: #fce4ec; --g: #4caf50; --dark: #2c3e50; }
+        body { margin: 0; background: var(--b); font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; }
+        .app { width: 100%; max-width: 700px; background: white; min-height: 100vh; display: flex; flex-direction: column; position: relative; }
         
-        /* Menü Sistemi */
-        .menu-bar { padding: 15px; background: white; border-bottom: 2px solid #eee; display: flex; overflow-x: auto; gap: 10px; white-space: nowrap; }
-        .menu-btn { padding: 8px 15px; border: 2px solid var(--p); border-radius: 20px; background: none; color: var(--p); cursor: pointer; font-weight: bold; }
-        .menu-btn.active { background: var(--p); color: white; }
+        /* Ders Seçimi */
+        .ders-listesi { display: flex; overflow-x: auto; padding: 10px; gap: 8px; background: #fff; border-bottom: 2px solid #eee; scrollbar-width: none; }
+        .ders-btn { padding: 8px 16px; background: #f8f9fa; border: 2px solid #ddd; border-radius: 20px; cursor: pointer; white-space: nowrap; font-weight: bold; font-size: 0.8em; }
+        .ders-btn.active { background: var(--p); color: white; border-color: var(--p); }
 
-        .ayse-box { padding: 15px; display: flex; align-items: center; gap: 15px; background: #fff9c4; margin: 10px; border-radius: 20px; border: 2px solid var(--y); }
-        #ayse-img { width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--p); }
-        .speech { font-size: 0.9em; color: #333; flex: 1; font-weight: 500; }
+        /* Ayşe Hoca Bölümü */
+        .hoca-alanı { display: flex; align-items: center; padding: 15px; background: #fff9c4; margin: 10px; border-radius: 25px; border: 2px dashed var(--p); }
+        #ayse-img { width: 70px; height: 70px; border-radius: 50%; border: 3px solid white; margin-right: 15px; }
+        .mesaj { font-size: 0.9em; color: var(--dark); line-height: 1.4; }
 
-        .stage { flex: 1; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        .card { background: #fff; border: 10px solid var(--y); border-radius: 30px; padding: 30px; width: 85%; text-align: center; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .q-text { font-size: 8em; font-family: 'Times New Roman', serif; margin: 10px 0; display: block; }
-        .info-label { background: var(--purp); color: white; padding: 5px 20px; border-radius: 20px; position: absolute; top: -15px; }
+        /* Ana Ekran */
+        .ekran { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+        .kart { background: #fff; border: 15px solid var(--y); border-radius: 40px; width: 85%; min-height: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 15px 35px rgba(0,0,0,0.1); position: relative; }
+        .ana-metin { font-size: 8.5em; color: #111; font-family: 'Times New Roman', serif; margin: 0; line-height: 1.2; }
+        .ders-etiket { position: absolute; top: -20px; background: var(--dark); color: white; padding: 5px 20px; border-radius: 20px; font-size: 0.8em; }
 
-        .sub-examples { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; width: 100%; margin-top: 20px; }
-        .ex-box { background: #f8f9fa; padding: 10px; border-radius: 12px; border: 1px solid #ddd; }
-        .ex-label { font-size: 0.7em; color: #888; margin-bottom: 5px; }
-        .ex-text { font-size: 2em; }
+        /* Detay Kutuları (Yazılış ve Örnekler) */
+        .detaylar { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; width: 100%; margin-top: 25px; }
+        .kutu { background: #f1f8e9; border: 2px solid var(--g); border-radius: 15px; padding: 10px; text-align: center; }
+        .kutu-baslik { font-size: 0.7em; color: #555; display: block; margin-bottom: 5px; }
+        .kutu-icerik { font-size: 2em; font-family: serif; font-weight: bold; }
 
-        .nav { padding: 20px; display: flex; gap: 15px; background: #f9f9f9; }
-        .btn { flex: 1; padding: 18px; border: none; border-radius: 20px; color: white; font-size: 1.2em; font-weight: bold; cursor: pointer; }
-        .btn-next { background: var(--g); box-shadow: 0 5px #2e7d32; }
-        .btn-prev { background: #95a5a6; }
+        /* Alt Navigasyon */
+        .nav { padding: 20px; display: flex; gap: 15px; background: #fff; }
+        .nav-btn { flex: 1; padding: 18px; border: none; border-radius: 25px; color: white; font-size: 1.2em; font-weight: bold; cursor: pointer; box-shadow: 0 5px #ccc; }
+        .geri { background: #90a4ae; }
+        .ileri { background: var(--g); box-shadow: 0 5px #2e7d32; }
     </style>
 </head>
 <body>
 
 <div class="app">
-    <div class="menu-bar" id="menu">
-        </div>
+    <div class="ders-listesi" id="dersMenu"></div>
 
-    <div class="ayse-box">
-        <img src="kiz.png" id="ayse-img" alt="Ayşe">
-        <div class="speech" id="ayse-speech">Yükleniyor...</div>
+    <div class="hoca-alanı" onclick="ayseTekrarla()">
+        <img src="kiz.png" id="ayse-img">
+        <div class="mesaj" id="ayseMesaj">Ders yükleniyor...</div>
     </div>
 
-    <div class="stage" id="main-stage">
-        <div class="card" onclick="speakHarf()">
-            <div class="info-label" id="section-tag">Ders 1</div>
-            <div class="q-text" id="display">ا</div>
-            <div id="meaning" style="font-size: 1.5em; color: #666;">Elif</div>
+    <div class="ekran">
+        <div class="kart" onclick="nesneSeslendir()">
+            <div class="ders-etiket" id="etiket">DERS 1</div>
+            <div class="ana-metin" id="anaMetin">ا</div>
+            <div id="altIsim" style="font-size: 1.5em; color: #666; margin-top: 10px;">Elif</div>
         </div>
 
-        <div class="sub-examples" id="sub-ex">
-            </div>
+        <div class="detaylar" id="detayAlanı"></div>
     </div>
 
     <div class="nav">
-        <button class="btn btn-prev" onclick="move(-1)">GERİ</button>
-        <button class="btn btn-next" onclick="move(1)">İLERİ ➡</button>
+        <button class="nav-btn geri" onclick="degistir(-1)">GERİ</button>
+        <button class="nav-btn ileri" onclick="degistir(1)">İLERİ</button>
     </div>
 </div>
 
 <script>
-    const müfredat = [
-        { cat: "Harfler", items: [
-            { h: "ا", n: "Elif", s: "Elif: İnce bir harftir. Kendinden sonrakine birleşmez." },
-            { h: "ب", n: "Be", s: "Be: Altında bir noktası var. Dudak harfidir." },
-            { h: "ت", n: "Te", s: "Te: Üstünde iki noktası var. Gülen harf!" },
-            { h: "ث", n: "Se", s: "Se: Peltek harftir. Dilini hafifçe dışarı çıkar." },
-            { h: "ج", n: "Cim", s: "Cim: Ortasında noktası olan sert bir harf." },
-            { h: "ح", n: "Ha", s: "Ha: Keskin bir boğaz harfidir. Noktası yoktur." },
-            { h: "خ", n: "Hı", t: "Hı: Hırıltılı ve kalın bir harftir." }
-        ]},
-        { cat: "Yazılışlar", items: [
-            { h: "ب", n: "Be", s: "Harflerin başta, ortada ve sonda yazılışlarını öğreniyoruz.", b: "بـ", o: "ـبـ", son: "ـب" },
-            { h: "ت", n: "Te", s: "Te harfi kelime içinde böyle değişir.", b: "تـ", o: "ـتـ", son: "ـت" }
-        ]},
-        { cat: "Harekeler", items: [
-            { h: "اَ", n: "E", s: "Üstün: Harfin üzerine konan çizgidir. İnceyi E, kalını A okutur." },
-            { h: "اِ", n: "İ", s: "Esre: Harfin altına konur. İ sesi verir." },
-            { h: "اُ", n: "U", s: "Ötre: Harfin üzerine konur. U sesi verir." }
-        ]},
-        { cat: "Tecvid", items: [
-            { h: "اَنْ", n: "En", s: "Tenvin: İki üstün 'en' veya 'an' sesi verir." },
-            { h: "اَبّ", n: "Ebba", s: "Şedde: Harfi iki kere okutur ve sıkıştırır." },
-            { h: "مَا", n: "Maaa", s: "Med: Elif harfi sesi uzatmamızı sağlar." }
-        ]},
-        { cat: "Dualar", items: [
-            { h: "سُبْحَانَكَ", n: "Sübhaneke", s: "Namaz dualarına başladık. Maşallah sana!" },
-            { h: "اَللّٰهُمَّ", n: "Allahumme", s: "Allahumme salli ve barik dualarıyla devam ediyoruz." }
-        ]}
+    const mufredat = [
+        // 1. DERS: HARFLER (PDF Sayfa 3-4)
+        { d: "DERS 1", t: "Harfler", h: "ا", i: "Elif", s: "Elif: Gökyüzüne uzanan ince bir harftir. Kendinden sonrakine birleşmez." },
+        { d: "DERS 1", t: "Harfler", h: "ب", i: "Be", s: "Be: Altında bir noktası var. Dudaklarını birbirine hafifçe vurarak çıkar." },
+        { d: "DERS 1", t: "Harfler", h: "ث", i: "Se", s: "Peltek Se: Dilinin ucunu üst ön dişlerine hafifçe dokundurarak söyle." },
+        { d: "DERS 1", t: "Harfler", h: "خ", i: "Hı", s: "Hı: Boğazın üst kısmından hırıltılı çıkan kalın bir harftir." },
+
+        // 2. DERS: HARFLERİN YAZILIŞLARI (PDF Sayfa 5-6)
+        { d: "DERS 2", t: "Yazılışlar", h: "ب", i: "Be", s: "Be harfinin kelime içindeki hallerine bak! Noktası hep alttadır.", b: "بـ", o: "ـبـ", son: "ـب" },
+        { d: "DERS 2", t: "Yazılışlar", h: "ع", i: "Ayın", s: "Ayın harfi başta, ortada ve sonda çok değişir. İyi incele!", b: "عـ", o: "ـعـ", son: "ـع" },
+
+        // 3. DERS: HAREKELER - ÜSTÜN (PDF Sayfa 7)
+        { d: "DERS 3", t: "Üstün", h: "بَ", i: "Ba", s: "Üstün (Fetha) harfin üstüne gelir. İnceyi E, kalını A okutur: Ba!" },
+        
+        // 4. DERS: ESRE (PDF Sayfa 8)
+        { d: "DERS 4", t: "Esre", h: "بِ", i: "Bi", s: "Esre (Kesra) harfin altına gelir. İnce harfi İ sesiyle okutur: Bi!" },
+
+        // 5. DERS: ÖTRE (PDF Sayfa 9)
+        { d: "DERS 5", t: "Ötre", h: "بُ", i: "Bu", s: "Ötre (Damme) harfin üstündedir. Dudaklarını büzerek U sesi çıkar: Bu!" },
+
+        // 9. DERS: CEZM (PDF Sayfa 13)
+        { d: "DERS 9", t: "Cezm", h: "اَبْ", i: "Eb", s: "Cezm yuvarlaktır. Üzerinde olduğu harfi bir öncekiyle bağlar ve durdurur: Eb!" },
+
+        // 10. DERS: ŞEDDE (PDF Sayfa 14)
+        { d: "DERS 10", t: "Şedde", h: "اَبَّ", i: "Ebba", s: "Şedde harfi iki kere okutur. Önce tut, sonra bırak: Ebba!" },
+
+        // 12. DERS: MED HARFLERİ (PDF Sayfa 16-17)
+        { d: "DERS 12", t: "Uzatma", h: "بَا", i: "Baaa", s: "Yanındaki Elif harfi sesi gökyüzüne doğru uzatır: Baaa!" },
+
+        // 17. DERS: ZAMİR (PDF Sayfa 21)
+        { d: "DERS 17", t: "Zamir", h: "لَهُ", i: "Lehu", s: "Zamir olan He harfi, kendinden önceki harekeliyse uzatılarak okunur: Lehu!" },
+
+        // 22. DERS: LAFZATULLAH (PDF Sayfa 24)
+        { d: "DERS 22", t: "Allah Lafzı", h: "اللّٰه", i: "Allahu", s: "Allah lafzından önceki harf üstün veya ötre ise Allah kelimesi kalın okunur." },
+
+        // NAMAZ DUALARI (PDF Sayfa 25-27)
+        { d: "DUALAR", t: "Sübhaneke", h: "سُبْحَانَكَ", i: "Sübhaneke", s: "Maşallah! Şimdi namaz dualarını kelime kelime öğrenelim. Sübhaneke..." },
+        { d: "DUALAR", t: "Salli", h: "صَلِّ", i: "Salli Duası", s: "Peygamber Efendimize selam gönderiyoruz: Allahümme salli..." }
     ];
 
-    let currentCat = 0;
-    let currentItem = 0;
+    let aktifIndeks = 0;
 
-    function initMenu() {
-        const menu = document.getElementById('menu');
-        müfredat.forEach((m, i) => {
+    function menuOlustur() {
+        const menu = document.getElementById('dersMenu');
+        const benzersizDersler = [...new Set(mufredat.map(m => m.t))];
+        benzersizDersler.forEach(t => {
             const btn = document.createElement('button');
-            btn.className = `menu-btn ${i === currentCat ? 'active' : ''}`;
-            btn.innerText = m.cat;
-            btn.onclick = () => { currentCat = i; currentItem = 0; update(); };
+            btn.className = 'ders-btn';
+            btn.innerText = t;
+            btn.onclick = () => {
+                aktifIndeks = mufredat.findIndex(m => m.t === t);
+                guncelle();
+            };
             menu.appendChild(btn);
         });
     }
 
-    function speak(text) {
+    function seslendir(metin, hiz = 0.85) {
         window.speechSynthesis.cancel();
-        const utter = new SpeechSynthesisUtterance(text);
+        const utter = new SpeechSynthesisUtterance(metin);
         utter.lang = 'tr-TR';
-        utter.pitch = 1.3;
+        utter.pitch = 1.4;
+        utter.rate = hiz;
         window.speechSynthesis.speak(utter);
     }
 
-    function update() {
-        const cat = müfredat[currentCat];
-        const item = cat.items[currentItem];
+    function guncelle() {
+        const veri = mufredat[aktifIndeks];
+        document.getElementById('etiket').innerText = veri.d;
+        document.getElementById('anaMetin').innerText = veri.h;
+        document.getElementById('altIsim').innerText = veri.i;
+        document.getElementById('ayseMesaj').innerText = veri.s;
         
-        document.querySelectorAll('.menu-btn').forEach((b, i) => b.classList.toggle('active', i === currentCat));
-        
-        document.getElementById('section-tag').innerText = cat.cat;
-        document.getElementById('display').innerText = item.h;
-        document.getElementById('meaning').innerText = item.n;
-        document.getElementById('ayse-speech').innerText = item.s;
-
-        const exArea = document.getElementById('sub-ex');
-        exArea.innerHTML = '';
-        if(item.b) {
-            exArea.innerHTML = `
-                <div class="ex-box"><div class="ex-label">Başta</div><div class="ex-text">${item.b}</div></div>
-                <div class="ex-box"><div class="ex-label">Ortada</div><div class="ex-text">${item.o}</div></div>
-                <div class="ex-box"><div class="ex-label">Sonda</div><div class="ex-text">${item.son}</div></div>
+        // Detay Alanı (Yazılışlar)
+        const detay = document.getElementById('detayAlanı');
+        detay.innerHTML = '';
+        if(veri.b) {
+            detay.innerHTML = `
+                <div class="kutu"><span class="kutu-baslik">Başta</span><div class="kutu-icerik">${veri.b}</div></div>
+                <div class="kutu"><span class="kutu-baslik">Ortada</span><div class="kutu-icerik">${veri.o}</div></div>
+                <div class="kutu"><span class="kutu-baslik">Sonda</span><div class="kutu-icerik">${veri.son}</div></div>
             `;
         }
-        
-        speak(item.s);
+
+        // Aktif Menü Butonu
+        document.querySelectorAll('.ders-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.innerText === veri.t);
+        });
+
+        seslendir(veri.s);
     }
 
-    function move(n) {
-        currentItem += n;
-        if(currentItem >= müfredat[currentCat].items.length) {
-            if(currentCat < müfredat.length - 1) {
-                currentCat++;
-                currentItem = 0;
+    function degistir(n) {
+        aktifIndeks += n;
+        if(aktifIndeks < 0) aktifIndeks = 0;
+        if(aktifIndeks >= mufredat.length) aktifIndeks = 0;
+        guncelle();
+    }
+
+    function nesneSeslendir() { seslendir(mufredat[aktifIndeks].i, 0.7); }
+    function ayseTekrarla() { seslendir(mufredat[aktifIndeks].s); }
+
+    window.onload = () => {
+        menuOlustur();
+        // İlk dokunuşta başlat
+        document.body.addEventListener('click', () => {
+            if(window.speechSynthesis.getVoices().length === 0) {
+                window.speechSynthesis.onvoiceschanged = guncelle;
             } else {
-                currentItem = 0;
+                if(document.getElementById('anaMetin').innerText === "ا") guncelle();
             }
-        } else if(currentItem < 0) {
-            currentItem = 0;
-        }
-        update();
-    }
-
-    function speakHarf() { speak(müfredat[currentCat].items[currentItem].n); }
-
-    window.onload = () => { initMenu(); update(); };
+        }, {once: true});
+    };
 </script>
 </body>
 </html>
