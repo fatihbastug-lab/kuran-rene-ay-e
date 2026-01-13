@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayşe ile Kuran Yolculuğu</title>
+    <style>
+        :root {
+            --primary-pink: #ff6baf;
+            --yellow: #ffeb3b;
+            --blue: #e0f7fa;
+            --dark-pink: #c2185b;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--blue);
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            border-radius: 30px;
+            padding: 25px;
+            margin: 40px auto;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+
+        h1 {
+            color: var(--primary-pink);
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+
+        .character-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            background: #fff9fb;
+            padding: 15px;
+            border-radius: 20px;
+        }
+
+        #ayse-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 4px solid var(--yellow);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        #ayse-image:hover { transform: scale(1.05); }
+
+        .speech-bubble {
+            background: #fff;
+            border: 2px solid var(--primary-pink);
+            border-radius: 15px;
+            padding: 12px;
+            flex: 1;
+            font-size: 0.95em;
+            position: relative;
+            color: #333;
+        }
+
+        .harf-container {
+            width: 160px;
+            height: 160px;
+            border: 8px solid var(--yellow);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 30px auto;
+            position: relative;
+            cursor: pointer;
+            background: #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .arabic-letter {
+            font-size: 6em;
+            color: #222;
+            user-select: none;
+        }
+
+        .level-tag {
+            position: absolute;
+            top: -15px;
+            background: var(--primary-pink);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .next-button {
+            background: var(--primary-pink);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 35px;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px var(--dark-pink);
+            transition: all 0.2s;
+        }
+
+        .next-button:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px var(--dark-pink);
+        }
+
+        .stars { color: var(--yellow); font-size: 1.5em; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Ayşe ile Kuran Öğreniyorum</h1>
+
+        <div class="character-section">
+            <img src="kiz.png" alt="Ayşe" id="ayse-image" onclick="ayseTekrarla()">
+            <div class="speech-bubble" id="ayse-speech">Merhaba! Ben Ayşe. Bugün harfleri ve harekeleri öğrenmeye hazır mısın? Hadi harfe tıkla!</div>
+        </div>
+
+        <div id="game-area">
+            <div class="harf-container" onclick="harfSeslendir()">
+                <div class="level-tag" id="level-label">Harf Tanıma</div>
+                <span class="arabic-letter" id="display-letter">ا</span>
+            </div>
+        </div>
+
+        <button class="next-button" onclick="nextStep()">Sonraki ➔</button>
+        
+        <div class="stars" id="star-count">⭐⭐⭐</div>
+    </div>
+
+    <script>
+        const content = [
+            { h: "ا", name: "Elif", label: "Harf Tanıma", desc: "Bu Elif. Tıpkı bir kalem gibi dimdik duruyor!" },
+            { h: "ب", name: "Be", label: "Harf Tanıma", desc: "Bak bu Be! Altında kocaman bir topu var!" },
+            { h: "ت", name: "Te", label: "Harf Tanıma", desc: "Bu Te harfi. Sana iki gözüyle gülümsüyor!" },
+            { h: "بَ", name: "Ba", label: "Üstün", desc: "Harfin üstüne çizgi gelince 'A' sesi verir. Bak 'Ba' oldu!" },
+            { h: "تَ", name: "Ta", label: "Üstün", desc: "Te harfi üstün alınca 'Ta' diye okunur. Hadi tekrar et!" },
+            { h: "بّ", name: "Ebba", label: "Şedde", desc: "Bu işaret Şedde! Harfi kuvvetlice tutmamızı sağlar: Eb-ba!" }
+        ];
+
+        let index = 0;
+
+        function speak(text) {
+            const synth = window.speechSynthesis;
+            const utter = new SpeechSynthesisUtterance(text);
+            utter.lang = 'tr-TR';
+            utter.pitch = 1.4; // Çocuksu ses
+            utter.rate = 0.85; // Yavaş ve anlaşılır
+            synth.speak(utter);
+        }
+
+        function updateDisplay() {
+            const item = content[index];
+            document.getElementById('display-letter').innerText = item.h;
+            document.getElementById('level-label').innerText = item.label;
+            document.getElementById('ayse-speech').innerText = item.desc;
+            
+            // Yeni harfe geçince Ayşe hikayesini anlatsın
+            setTimeout(() => speak(item.desc), 500);
+        }
+
+        function harfSeslendir() {
+            speak(content[index].name);
+        }
+
+        function ayseTekrarla() {
+            speak(content[index].desc);
+        }
+
+        function nextStep() {
+            index++;
+            if (index >= content.length) {
+                index = 0; // Başa dön veya bitiş mesajı ver
+                speak("Tebrikler prenses! Hepsini bitirdin. Tekrar oynayalım mı?");
+            }
+            updateDisplay();
+        }
+
+        // İlk açılışta selamlama
+        window.onload = () => {
+            setTimeout(() => {
+                speak("Merhaba! Ben Ayşe. Seninle harfleri öğrenmek için sabırsızlanıyorum!");
+            }, 1000);
+        };
+    </script>
+</body>
+</html>
