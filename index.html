@@ -2,204 +2,150 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ayşe ile Kuran Yolculuğu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ayşe ile Kur'an Akademisi</title>
     <style>
-        :root {
-            --primary-pink: #ff6baf;
-            --yellow: #ffeb3b;
-            --blue: #e0f7fa;
-            --dark-pink: #c2185b;
-        }
+        :root { --p: #ff6baf; --y: #ffeb3b; --b: #e1f5fe; --d: #d81b60; --g: #4caf50; --purp: #9c27b0; }
+        body { margin: 0; background: var(--b); font-family: 'Arial Rounded MT Bold', sans-serif; display: flex; justify-content: center; -webkit-tap-highlight-color: transparent; }
+        .app { width: 100%; max-width: 500px; background: white; min-height: 100vh; display: flex; flex-direction: column; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        
+        .header { padding: 15px; background: white; border-bottom: 2px solid #eee; text-align: center; }
+        .prog-container { height: 10px; background: #eee; border-radius: 5px; margin-top: 8px; overflow: hidden; }
+        .prog-fill { height: 100%; background: linear-gradient(90deg, var(--p), var(--purp)); transition: width 0.5s; width: 0%; }
+        
+        .ayse-box { padding: 12px; display: flex; align-items: center; gap: 12px; background: #fff9fb; margin: 10px; border-radius: 20px; border: 2px solid #ffe1ef; cursor: pointer; min-height: 80px; }
+        #ayse-img { width: 65px; height: 65px; border-radius: 50%; border: 3px solid var(--y); flex-shrink: 0; }
+        .speech { font-size: 0.85em; color: #444; line-height: 1.4; flex: 1; font-weight: 500; }
 
-        body {
-            margin: 0;
-            background-color: var(--blue);
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
+        .stage { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px; position: relative; }
+        .letter-circle { width: 200px; height: 200px; border: 12px solid var(--y); border-radius: 40px; display: flex; align-items: center; justify-content: center; background: white; box-shadow: 0 10px 25px rgba(0,0,0,0.1); position: relative; cursor: pointer; transition: 0.2s; }
+        .letter-circle:active { transform: scale(0.95); }
+        .letter-text { font-size: 6.5em; color: #222; font-family: 'Times New Roman', serif; }
+        .tag { position: absolute; top: -20px; background: var(--purp); color: white; padding: 6px 18px; border-radius: 20px; font-weight: bold; font-size: 0.8em; z-index: 10; }
 
-        .container {
-            background: white;
-            border-radius: 30px;
-            padding: 25px;
-            margin: 40px auto;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            text-align: center;
-        }
-
-        h1 {
-            color: var(--primary-pink);
-            font-size: 1.8em;
-            margin-bottom: 20px;
-        }
-
-        .character-section {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 25px;
-            background: #fff9fb;
-            padding: 15px;
-            border-radius: 20px;
-        }
-
-        #ayse-image {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 4px solid var(--yellow);
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        #ayse-image:hover { transform: scale(1.05); }
-
-        .speech-bubble {
-            background: #fff;
-            border: 2px solid var(--primary-pink);
-            border-radius: 15px;
-            padding: 12px;
-            flex: 1;
-            font-size: 0.95em;
-            position: relative;
-            color: #333;
-        }
-
-        .harf-container {
-            width: 160px;
-            height: 160px;
-            border: 8px solid var(--yellow);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 30px auto;
-            position: relative;
-            cursor: pointer;
-            background: #fff;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-
-        .arabic-letter {
-            font-size: 6em;
-            color: #222;
-            user-select: none;
-        }
-
-        .level-tag {
-            position: absolute;
-            top: -15px;
-            background: var(--primary-pink);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 15px;
-            font-size: 0.9em;
-            font-weight: bold;
-        }
-
-        .next-button {
-            background: var(--primary-pink);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 35px;
-            font-size: 1.3em;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 5px var(--dark-pink);
-            transition: all 0.2s;
-        }
-
-        .next-button:active {
-            transform: translateY(3px);
-            box-shadow: 0 2px var(--dark-pink);
-        }
-
-        .stars { color: var(--yellow); font-size: 1.5em; margin-top: 10px; }
+        .nav { padding: 20px; display: flex; justify-content: space-between; gap: 15px; background: #fafafa; }
+        .btn { flex: 1; padding: 16px; border: none; border-radius: 20px; color: white; font-size: 1.1em; font-weight: bold; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-prev { background: #bbb; box-shadow: 0 5px #999; }
+        .btn-next { background: var(--p); box-shadow: 0 5px var(--d); }
+        .btn:active { transform: translateY(3px); box-shadow: none; }
+        
+        .section-info { font-size: 0.75em; color: #999; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Ayşe ile Kuran Öğreniyorum</h1>
-
-        <div class="character-section">
-            <img src="kiz.png" alt="Ayşe" id="ayse-image" onclick="ayseTekrarla()">
-            <div class="speech-bubble" id="ayse-speech">Merhaba! Ben Ayşe. Bugün harfleri ve harekeleri öğrenmeye hazır mısın? Hadi harfe tıkla!</div>
-        </div>
-
-        <div id="game-area">
-            <div class="harf-container" onclick="harfSeslendir()">
-                <div class="level-tag" id="level-label">Harf Tanıma</div>
-                <span class="arabic-letter" id="display-letter">ا</span>
-            </div>
-        </div>
-
-        <button class="next-button" onclick="nextStep()">Sonraki ➔</button>
-        
-        <div class="stars" id="star-count">⭐⭐⭐</div>
+<div class="app">
+    <div class="header">
+        <div class="section-info" id="sec-info">Yükleniyor...</div>
+        <div class="prog-container"><div class="prog-fill" id="prog"></div></div>
     </div>
 
-    <script>
-        const content = [
-            { h: "ا", name: "Elif", label: "Harf Tanıma", desc: "Bu Elif. Tıpkı bir kalem gibi dimdik duruyor!" },
-            { h: "ب", name: "Be", label: "Harf Tanıma", desc: "Bak bu Be! Altında kocaman bir topu var!" },
-            { h: "ت", name: "Te", label: "Harf Tanıma", desc: "Bu Te harfi. Sana iki gözüyle gülümsüyor!" },
-            { h: "بَ", name: "Ba", label: "Üstün", desc: "Harfin üstüne çizgi gelince 'A' sesi verir. Bak 'Ba' oldu!" },
-            { h: "تَ", name: "Ta", label: "Üstün", desc: "Te harfi üstün alınca 'Ta' diye okunur. Hadi tekrar et!" },
-            { h: "بّ", name: "Ebba", label: "Şedde", desc: "Bu işaret Şedde! Harfi kuvvetlice tutmamızı sağlar: Eb-ba!" }
-        ];
+    <div class="ayse-box" onclick="repeatSpeech()">
+        <img src="kiz.png" id="ayse-img" alt="Ayşe">
+        <div class="speech" id="ayse-speech">Merhaba! Kur'an öğrenme yolculuğuna hoş geldin!</div>
+    </div>
 
-        let index = 0;
+    <div class="stage">
+        <div class="letter-circle" onclick="speakItem()">
+            <div class="tag" id="tag">Bölüm</div>
+            <div class="letter-text" id="letter">ا</div>
+        </div>
+        <p style="color: #aaa; margin-top: 15px; font-size: 0.75em;">Dinlemek için harfe veya Ayşe'ye tıkla!</p>
+    </div>
 
-        function speak(text) {
-            const synth = window.speechSynthesis;
-            const utter = new SpeechSynthesisUtterance(text);
-            utter.lang = 'tr-TR';
-            utter.pitch = 1.4; // Çocuksu ses
-            utter.rate = 0.85; // Yavaş ve anlaşılır
-            synth.speak(utter);
+    <div class="nav">
+        <button class="btn btn-prev" onclick="move(-1)">⬅ Geri</button>
+        <button class="btn btn-next" onclick="move(1)">İleri ➡</button>
+    </div>
+</div>
+
+<script>
+    const curriculum = [
+        // 1. TEMEL HARFLER (DETAYLI)
+        { h: "ا", n: "Elif", t: "Harfler", s: "Bu Elif. Gökyüzüne uzanan bir kalem gibi dimdik durur!" },
+        { h: "ب", n: "Be", t: "Harfler", s: "Be harfi! Altında bir tane noktası var, tıpkı bir top gibi!" },
+        { h: "ت", n: "Te", t: "Harfler", s: "Te harfi. Üzerinde iki noktası var, sanki bize gülümsüyor!" },
+        { h: "ث", n: "Se", t: "Harfler", s: "Peltek Se! Dilini dişlerine hafifçe dokundurarak söylemelisin." },
+        { h: "ج", n: "Cim", t: "Harfler", s: "Cim harfi. Karnında bir tane noktası var!" },
+        { h: "ح", n: "Ha", t: "Harfler", s: "Boğazından gelen temiz bir ses: Ha! Hiç noktası yok." },
+        { h: "خ", n: "Hı", t: "Harfler", s: "Hı! Tepesinde bir noktası olan hırıltılı bir harf." },
+
+        // 2. HAREKELER (OKUMA TEMELİ)
+        { h: "بَ", n: "Ba", t: "Üstün", s: "Üstün harfin üstüne gelir ve A sesi verir. Ba!" },
+        { h: "بِ", n: "Bi", t: "Esre", s: "Esre harfin altına gelir ve İ sesi verir. Bi!" },
+        { h: "بُ", n: "Bu", t: "Ötre", s: "Ötre harfin tepesinde bir kurdele gibidir ve U sesi verir. Bu!" },
+
+        // 3. TENVİN (İKİ HAREKE)
+        { h: "بً", n: "Ben", t: "Tenvin", s: "İki üstün gelince harfi N sesiyle bitiririz. Ben!" },
+        { h: "بٍ", n: "Bin", t: "Tenvin", s: "İki esre gelince İN diye okuruz. Bin!" },
+        { h: "بٌ", n: "Bun", t: "Tenvin", s: "İki ötre gelince UN diye okuruz. Bun!" },
+
+        // 4. CEZM VE ŞEDDE (GÜÇLÜ OKUMA)
+        { h: "اَبْ", n: "Eb", t: "Cezm", s: "Cezm yuvarlaktır ve harfi durdurur. Eb!" },
+        { h: "اَبَّ", n: "Ebba", t: "Şedde", s: "Şedde harfi iki kere kuvvetli okutur. Ebba!" },
+
+        // 5. MED HARFLERİ (UZATMA)
+        { h: "بَا", n: "Baaa", t: "Uzatma", s: "Elif harfi sesi gökyüzüne doğru uzatır: Baaa!" },
+        { h: "بِي", n: "Biii", t: "Uzatma", s: "Ya harfi sesi aşağıya doğru çeker: Biii!" },
+        { h: "بُو", n: "Buuu", t: "Uzatma", s: "Vav harfi dudaklarını büzerek uzatmanı sağlar: Buuu!" },
+
+        // 6. SURELERE GEÇİŞ (KELİME ÇALIŞMASI)
+        { h: "اَحَدٌ", n: "Ehadun", t: "Kelime", s: "Harika! Şimdi bir kelime okuyalım: Ehadun!" },
+        { h: "رَبِّ", n: "Rabbi", t: "Kelime", s: "Şeddeyi hatırla ve kuvvetli oku: Rabbi!" },
+
+        // 7. SURELER (AYET AYET)
+        { h: "اَلْحَمْدُ لِلّٰهِ", n: "Elhamdu lillahi", t: "Fatiha Suresi", s: "Fatiha Suresi'ne başladık! Elhamdu lillahi!" },
+        { h: "رَبِّ الْعَالَم۪ينَ", n: "Rabbil alemin", t: "Fatiha Suresi", s: "Rabbil Alemin! Maşallah sana!" },
+        { h: "قُلْ هُوَ اللّٰهُ اَحَدٌ", n: "Kul huvallahu ehad", t: "İhlas Suresi", s: "İhlas Suresi: Kul huvallahu ehad! Allah birdir demek." },
+        { h: "اَللّٰهُ الصَّمَدُ", n: "Allahus samed", t: "İhlas Suresi", s: "Allahus Samed! Her şey O'na muhtaçtır." }
+    ];
+
+    let idx = 0;
+
+    function speak(text) {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        const voices = window.speechSynthesis.getVoices();
+        const trVoice = voices.find(v => v.lang.includes('tr-TR') || v.lang.includes('tr'));
+        if (trVoice) utter.voice = trVoice;
+        utter.lang = 'tr-TR';
+        utter.pitch = 1.3;
+        utter.rate = 0.85;
+        window.speechSynthesis.speak(utter);
+    }
+
+    function update() {
+        const d = curriculum[idx];
+        document.getElementById('letter').innerText = d.h;
+        document.getElementById('tag').innerText = d.t;
+        document.getElementById('sec-info').innerText = `${d.t} - Adım ${idx + 1}`;
+        document.getElementById('ayse-speech').innerText = d.s;
+        
+        const p = ((idx + 1) / curriculum.length) * 100;
+        document.getElementById('prog').style.width = p + "%";
+        
+        speak(d.s);
+    }
+
+    function move(n) {
+        idx += n;
+        if (idx < 0) idx = 0;
+        if (idx >= curriculum.length) {
+            idx = 0;
+            speak("Tebrikler prenses! Tüm aşamaları ve sureleri bitirdin! Seninle gurur duyuyorum.");
         }
+        update();
+    }
 
-        function updateDisplay() {
-            const item = content[index];
-            document.getElementById('display-letter').innerText = item.h;
-            document.getElementById('level-label').innerText = item.label;
-            document.getElementById('ayse-speech').innerText = item.desc;
-            
-            // Yeni harfe geçince Ayşe hikayesini anlatsın
-            setTimeout(() => speak(item.desc), 500);
-        }
+    function speakItem() { speak(curriculum[idx].n); }
+    function repeatSpeech() { speak(curriculum[idx].s); }
 
-        function harfSeslendir() {
-            speak(content[index].name);
-        }
+    window.onload = () => {
+        document.body.addEventListener('click', () => {
+            if(idx === 0) update();
+        }, { once: true });
+    };
+</script>
 
-        function ayseTekrarla() {
-            speak(content[index].desc);
-        }
-
-        function nextStep() {
-            index++;
-            if (index >= content.length) {
-                index = 0; // Başa dön veya bitiş mesajı ver
-                speak("Tebrikler prenses! Hepsini bitirdin. Tekrar oynayalım mı?");
-            }
-            updateDisplay();
-        }
-
-        // İlk açılışta selamlama
-        window.onload = () => {
-            setTimeout(() => {
-                speak("Merhaba! Ben Ayşe. Seninle harfleri öğrenmek için sabırsızlanıyorum!");
-            }, 1000);
-        };
-    </script>
 </body>
 </html>
